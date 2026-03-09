@@ -10,3 +10,24 @@ model_path = hf_hub_download(
 )
 
 model = joblib.load(model_path)
+st.title("Wellness Tourism Package Predictor")
+
+age = st.number_input("Age", min_value=18, max_value=80)
+income = st.number_input("Monthly Income")
+trips = st.number_input("Number of Trips")
+
+data = {
+    "Age": age,
+    "MonthlyIncome": income,
+    "NumberOfTrips": trips
+}
+
+input_df = pd.DataFrame([data])
+if st.button("Predict Purchase"):
+
+    prediction = model.predict(input_df)
+
+    if prediction[0] == 1:
+        st.success("Customer likely to purchase the package")
+    else:
+        st.error("Customer unlikely to purchase the package")
